@@ -17,6 +17,9 @@ public class VentanaJuego extends JFrame {
 	MundoJuego miMundo;        // Mundo del juego
 	CocheJuego miCoche;        // Coche del juego
 	MiRunnable miHilo = null;  // Hilo del bucle principal de juego	
+	
+	// Creo el array de booleanos para gestionar el evento de pulsar y soltar teclas
+	private boolean [] aTeclas = new boolean [4];
 
 	/** Constructor de la ventana de juego. Crea y devuelve la ventana inicializada
 	 * sin coches dentro
@@ -76,23 +79,52 @@ public class VentanaJuego extends JFrame {
 		
 		// Añadido para que también se gestione por teclado con el KeyListener
 		pPrincipal.addKeyListener( new KeyAdapter() {
+			
+			//Cuando pulso las teclas:
 			@Override
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_UP: {
-						miCoche.acelera( +5, 1 );
+						aTeclas[0] = true;
+						//miCoche.acelera( +5, 1 );
 						break;
 					}
 					case KeyEvent.VK_DOWN: {
-						miCoche.acelera( -5, 1 );
+						aTeclas[1] = true;
+						//miCoche.acelera( -5, 1 );
 						break;
 					}
 					case KeyEvent.VK_LEFT: {
-						miCoche.gira( +10 );
+						aTeclas[2] = true;
+						//miCoche.gira( +10 );
 						break;
 					}
 					case KeyEvent.VK_RIGHT: {
-						miCoche.gira( -10 );
+						aTeclas[3] = true;
+						//miCoche.gira( -10 );
+						break;
+					}
+				}
+			}
+			
+			// Cuando suelto las teclas:
+			@Override
+			public void keyReleased(KeyEvent e) {
+				switch (e.getKeyCode()) {
+					case KeyEvent.VK_UP: {
+						aTeclas[0] = false;
+						break;
+					}
+					case KeyEvent.VK_DOWN: {
+						aTeclas[1] = false;
+						break;
+					}
+					case KeyEvent.VK_LEFT: {
+						aTeclas[2] = false;
+						break;
+					}
+					case KeyEvent.VK_RIGHT: {
+						aTeclas[3] = false;
 						break;
 					}
 				}
@@ -151,6 +183,28 @@ public class VentanaJuego extends JFrame {
 		public void run() {
 			// Bucle principal forever hasta que se pare el juego...
 			while (sigo) {
+				for (int i=0; i<4; i++){
+					if (aTeclas[i]==true){
+						switch (i){
+							case 0: {
+								miCoche.acelera( +5, 1 );
+								break;
+							}
+							case 1: {
+								miCoche.acelera( -5, 1 );
+								break;
+							}
+							case 2: {
+								miCoche.gira( +10 );
+								break;
+							}
+							case 3: {
+								miCoche.gira( -10 );
+								break;
+							}
+						}
+					}
+				}
 				// Mover coche
 				miCoche.mueve( 0.040 );
 				// Chequear choques
