@@ -205,6 +205,9 @@ public class VentanaJuego extends JFrame {
 						}
 					}
 				}
+				
+				miMundo.creaEstrella();
+				miMundo.quitaYRotaEstrellas(6000);
 				// Mover coche
 				miCoche.mueve( 0.040 );
 				// Chequear choques
