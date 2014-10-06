@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 public class MundoJuego {
 	private JPanel panel;  // panel visual del juego
 	CocheJuego miCoche;    // Coche del juego
+
 	
 	//ArrayList con las estrellas que se van creando
 	private ArrayList<JLabelEstrella> estrellas = new ArrayList<JLabelEstrella>(); 

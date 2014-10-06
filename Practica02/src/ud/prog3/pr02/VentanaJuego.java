@@ -17,9 +17,12 @@ public class VentanaJuego extends JFrame {
 	MundoJuego miMundo;        // Mundo del juego
 	CocheJuego miCoche;        // Coche del juego
 	MiRunnable miHilo = null;  // Hilo del bucle principal de juego	
+	private JLabel mensaje;
 	
 	// Creo el array de booleanos para gestionar el evento de pulsar y soltar teclas
 	private boolean [] aTeclas = new boolean [4];
+	
+	int chocadas = 0;
 
 	/** Constructor de la ventana de juego. Crea y devuelve la ventana inicializada
 	 * sin coches dentro
@@ -30,25 +33,30 @@ public class VentanaJuego extends JFrame {
 		// Creación contenedores y componentes
 		pPrincipal = new JPanel();
 		JPanel pBotonera = new JPanel();
-		JButton bAcelerar = new JButton( "Acelera" );
+		mensaje = new JLabel("Estrellas atropelladas: " + chocadas + "    " +
+								"Puntuación: " + chocadas*5);
+		pBotonera.add(mensaje);
+		
+		/*JButton bAcelerar = new JButton( "Acelera" );
 		JButton bFrenar = new JButton( "Frena" );
 		JButton bGiraIzq = new JButton( "Gira Izq." );
-		JButton bGiraDer = new JButton( "Gira Der." );
+		JButton bGiraDer = new JButton( "Gira Der." );*/
+		
 		// Formato y layouts
 		pPrincipal.setLayout( null );
 		pPrincipal.setBackground( Color.white );
 		// Añadido de componentes a contenedores
 		add( pPrincipal, BorderLayout.CENTER );
-		pBotonera.add( bAcelerar );
+		/*pBotonera.add( bAcelerar );
 		pBotonera.add( bFrenar );
 		pBotonera.add( bGiraIzq );
-		pBotonera.add( bGiraDer );
+		pBotonera.add( bGiraDer );*/
 		add( pBotonera, BorderLayout.SOUTH );
 		// Formato de ventana
 		setSize( 1000, 750 );
 		setResizable( false );
 		// Escuchadores de botones
-		bAcelerar.addActionListener( new ActionListener() {
+		/*bAcelerar.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				miCoche.acelera( +10, 1 );
@@ -76,6 +84,7 @@ public class VentanaJuego extends JFrame {
 				// System.out.println( "Nueva dirección de coche: " + miCoche.getDireccionActual() );
 			}
 		});
+		*/
 		
 		// Añadido para que también se gestione por teclado con el KeyListener
 		pPrincipal.addKeyListener( new KeyAdapter() {
@@ -168,17 +177,29 @@ public class VentanaJuego extends JFrame {
 			miVentana.miHilo = miVentana.new MiRunnable();  // Sintaxis de new para clase interna
 			Thread nuevoHilo = new Thread( miVentana.miHilo );
 			nuevoHilo.start();
+			
+		
 		} catch (Exception e) {
 			System.exit(1);  // Error anormal
 		}
 	}
 	
+	public void finalizarJuego(){
+		JOptionPane.showMessageDialog(this, "HAS PERDIDO :'(");
+		System.exit(1);
+	}
+	
+	
 	/** Clase interna para implementación de bucle principal del juego como un hilo
 	 * @author Andoni Eguíluz
 	 * Facultad de Ingeniería - Universidad de Deusto (2014)
 	 */
+	
+
 	class MiRunnable implements Runnable {
 		boolean sigo = true;
+		int borradas = 0;
+		
 		@Override
 		public void run() {
 			// Bucle principal forever hasta que se pare el juego...
@@ -207,8 +228,8 @@ public class VentanaJuego extends JFrame {
 				}
 				
 				miMundo.creaEstrella();
-				miMundo.quitaYRotaEstrellas(6000);
-				
+				borradas += miMundo.quitaYRotaEstrellas(6000);
+						
 				// Mover coche
 				miCoche.mueve( 0.040 );
 				// Chequear choques
@@ -218,18 +239,27 @@ public class VentanaJuego extends JFrame {
 				if (miMundo.hayChoqueVertical(miCoche)) // Espejo vertical si choca en Y
 					miMundo.rebotaVertical(miCoche);
 				
-				miMundo.choquesConEstrellas();
+				chocadas += miMundo.choquesConEstrellas();
+				mensaje.setText("Estrellas atropelladas: " + chocadas + "    " +
+								"Puntuación: " + chocadas*5);
 				
 				// Dormir el hilo 40 milisegundos
 				try {
 					Thread.sleep( 40 );
 				} catch (Exception e) {
 				}
+				
+				if (borradas >= 10){
+					acaba();
+				finalizarJuego();}
+					
 			}
 		}
+		
+		
 		/** Ordena al hilo detenerse en cuanto sea posible
 		 */
-		public void acaba() {
+		public void acaba() {	
 			sigo = false;
 		}
 	};
