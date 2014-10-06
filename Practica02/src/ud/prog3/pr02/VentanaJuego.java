@@ -208,6 +208,7 @@ public class VentanaJuego extends JFrame {
 				
 				miMundo.creaEstrella();
 				miMundo.quitaYRotaEstrellas(6000);
+				
 				// Mover coche
 				miCoche.mueve( 0.040 );
 				// Chequear choques
@@ -216,6 +217,9 @@ public class VentanaJuego extends JFrame {
 					miMundo.rebotaHorizontal(miCoche);
 				if (miMundo.hayChoqueVertical(miCoche)) // Espejo vertical si choca en Y
 					miMundo.rebotaVertical(miCoche);
+				
+				miMundo.choquesConEstrellas();
+				
 				// Dormir el hilo 40 milisegundos
 				try {
 					Thread.sleep( 40 );

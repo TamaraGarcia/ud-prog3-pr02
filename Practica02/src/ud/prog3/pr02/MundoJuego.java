@@ -187,4 +187,28 @@ public class MundoJuego {
 		return borradas;
 	}
 	
+	/** Calcula si hay choques del coche con alguna estrella (o varias). Se considera el choque si
+	* se tocan las esferas lógicas del coche y la estrella. Si es así, las elimina.
+	* @return Número de estrellas eliminadas
+	*/
+	public int choquesConEstrellas(){
+		int numEstrellasEliminadas = 0;
+		
+		for (int i=0; i<estrellas.size(); i++){
+			
+			double distCentros = Math.sqrt( Math.pow(estrellas.get(i).getX() - miCoche.getPosX(), 2) +
+									Math.pow(estrellas.get(i).getY() - miCoche.getPosY(), 2));
+			
+			if (distCentros < (JLabelEstrella.RADIO_ESFERA_ESTRELLA + JLabelCoche.RADIO_ESFERA_COCHE)){
+				//Hay choque
+				panel.remove(estrellas.get(i));
+				estrellas.remove(estrellas.get(i));
+				panel.repaint();
+				numEstrellasEliminadas++;
+			}
+		}
+		
+		return numEstrellasEliminadas;
+	}
+	
 }
