@@ -13,6 +13,7 @@ import javax.swing.JLabel;
  */
 public class JLabelEstrella extends JLabel{
 
+	private static final long serialVersionUID = 1L;
 	public static final int TAMANYO_ESTRELLA = 40;  // píxels (igual ancho que algo)
 	public static final int RADIO_ESFERA_ESTRELLA = 17;  // Radio en píxels del bounding circle de la estrella (para choques)
 	public long milisegundos;

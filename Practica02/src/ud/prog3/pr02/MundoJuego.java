@@ -1,5 +1,6 @@
 package ud.prog3.pr02;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -181,6 +182,8 @@ public class MundoJuego {
 				borradas++;
 			}else{
 				estrellas.get(i).setGiro(10);
+				Graphics g = estrellas.get(i).getGraphics();
+				estrellas.get(i).paintComponent(g);
 				estrellas.get(i).repaint();
 			}
 				
